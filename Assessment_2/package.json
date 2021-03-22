@@ -1,0 +1,11 @@
+{
+  "name": "wizelineqa",
+  "version": "1.0.0",
+  "description": "backend postman automation",
+  "main": "index.js",
+  "scripts": {
+    "testAPI": "npx newman run './YOUR_APP/tests/backend/collection/Todoist.postman_collection.json' -e './YOUR_APP/tests/backend/envVariables/QA.postman_environment.json' -r htmlextra --reporter-htmlextra-export './YOUR_APP/tests/backend/reports/todoist_report.html'"
+  },
+  "author": "Liliana Chavaje",
+  "license": "ISC"
+}

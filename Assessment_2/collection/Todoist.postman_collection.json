@@ -1,0 +1,772 @@
+{
+	"info": {
+		"_postman_id": "60946f43-d054-42fb-ac5e-27b4c1778979",
+		"name": "Todoist",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "PROJECT",
+			"item": [
+				{
+					"name": "Create Project",
+					"item": [
+						{
+							"name": "Create a new Project",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"var name = pm.environment.get(\"projectName\")",
+											"const schema = {",
+											"    \"type\": \"object\",",
+											"    \"properties\": {",
+											"        \"id\": {\"type\":\"number\"},",
+											"        \"order\": {\"type\":\"number\"},",
+											"        \"color\": {\"type\":\"number\"},",
+											"        \"name\": {\"type\":\"string\"},",
+											"        \"comment_count\": {\"type\":\"number\"},",
+											"        \"shared\": {\"type\":\"boolean\"},",
+											"        \"favorite\": {\"type\":\"boolean\"},",
+											"        \"sync_id\": {\"type\":\"number\"},",
+											"        \"url\": {\"type\":\"string\"}",
+											"    }",
+											"};",
+											"",
+											"pm.environment.set(\"projectId\", jsonData.id);",
+											"",
+											"pm.test(\"Status code is 2xx\", function () {",
+											"    pm.response.to.be.success;",
+											"});",
+											"",
+											"pm.test(\"Project Name is correct\", function () {",
+											"    pm.expect(jsonData.name).to.eql(name);",
+											"});",
+											"",
+											"pm.test(\"Content-Type is application/json\", () => {",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+											"});",
+											"",
+											"pm.test(\"Validate schema\", () => {",
+											"    pm.response.to.have.jsonSchema(schema);",
+											"});",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "X-Requested-Id",
+										"value": "$(uuidgen)",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"{{projectName}}\"\n}"
+								},
+								"url": {
+									"raw": "{{baseURL}}",
+									"host": [
+										"{{baseURL}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get active Tasks",
+					"item": [
+						{
+							"name": "Get active Tasks",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const schema = {",
+											"    \"type\": \"array\",",
+											"    \"properties\": {",
+											"        \"id\": {\"type\":\"number\"},",
+											"        \"assigner\": {\"type\":\"number\"},",
+											"        \"project_id\": {\"type\":\"number\"},",
+											"        \"section_id\": {\"type\":\"number\"},",
+											"        \"order\": {\"type\":\"number\"},",
+											"        \"content\": {\"type\":\"string\"},",
+											"        \"completed\": {\"type\":\"boolean\"},",
+											"        \"label_ids\": {\"type\":\"array\"},",
+											"        \"priority\": {\"type\":\"number\"},",
+											"        \"comment_count\": {\"type\":\"number\"},",
+											"        \"creator\": {\"type\":\"number\"},",
+											"        \"created\": {\"type\":\"string\"},",
+											"        \"url\": {\"type\":\"string\"}",
+											"    }",
+											"};",
+											"",
+											"pm.test(\"Status code is 2xx\", function () {",
+											"    pm.response.to.be.success;",
+											"});",
+											"",
+											"pm.test(\"Content-Type is application/json\", () => {",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+											"});",
+											"",
+											"pm.test(\"Validate schema\", () => {",
+											"    pm.response.to.have.jsonSchema(schema);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{taskURL}}",
+									"host": [
+										"{{taskURL}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Add Task",
+					"item": [
+						{
+							"name": "Create a new task",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											"var jsonData = pm.response.json();",
+											"var name = pm.environment.get(\"Chore1\")",
+											"",
+											"const schema = {",
+											"    \"type\": \"object\",",
+											"    \"properties\": {",
+											"        \"id\": {\"type\":\"number\"},",
+											"        \"assigner\": {\"type\":\"number\"},",
+											"        \"project_id\": {\"type\":\"number\"},",
+											"        \"section_id\": {\"type\":\"number\"},",
+											"        \"order\": {\"type\":\"number\"},",
+											"        \"content\": {\"type\":\"string\"},",
+											"        \"completed\": {\"type\":\"boolean\"},",
+											"        \"label_ids\": {\"type\":\"array\"},",
+											"        \"priority\": {\"type\":\"number\"},",
+											"        \"comment_count\": {\"type\":\"number\"},",
+											"        \"creator\": {\"type\":\"number\"},",
+											"        \"created\": {\"type\":\"string\"},",
+											"        \"url\": {\"type\":\"string\"}",
+											"    }",
+											"};",
+											"",
+											"pm.environment.set(\"taskId\", jsonData.id);",
+											"",
+											"pm.test(\"Status code is 2xx\", function () {",
+											"    pm.response.to.be.success;",
+											"});",
+											"",
+											"pm.test(\"Task Name is correct\", function () {",
+											"    pm.expect(jsonData.content).to.eql(name);",
+											"});",
+											"",
+											"pm.test(\"Content-Type is application/json\", () => {",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+											"});",
+											"",
+											"pm.test(\"Validate schema\", () => {",
+											"    pm.response.to.have.jsonSchema(schema);",
+											"});",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "X-Requested-Id",
+										"value": "$(uuidgen)",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"content\": \"{{Chore1}}\", \"project_id\": {{projectId}}\n}"
+								},
+								"url": {
+									"raw": "{{taskURL}}",
+									"host": [
+										"{{taskURL}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get an active task",
+					"item": [
+						{
+							"name": "Get an active task",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"var proj_id = pm.environment.get(\"projectId\")",
+											"",
+											"const schema = {",
+											"    \"type\": \"object\",",
+											"    \"properties\": {",
+											"        \"id\": {\"type\":\"number\"},",
+											"        \"assigner\": {\"type\":\"number\"},",
+											"        \"project_id\": {\"type\":\"number\"},",
+											"        \"section_id\": {\"type\":\"number\"},",
+											"        \"order\": {\"type\":\"number\"},",
+											"        \"content\": {\"type\":\"string\"},",
+											"        \"completed\": {\"type\":\"boolean\"},",
+											"        \"label_ids\": {\"type\":\"array\"},",
+											"        \"priority\": {\"type\":\"number\"},",
+											"        \"comment_count\": {\"type\":\"number\"},",
+											"        \"creator\": {\"type\":\"number\"},",
+											"        \"created\": {\"type\":\"string\"},",
+											"        \"url\": {\"type\":\"string\"}",
+											"    }",
+											"};",
+											"",
+											"pm.test(\"Status code is 2xx\", function () {",
+											"    pm.response.to.be.success;",
+											"});",
+											"",
+											"pm.test(\"Project id is correct\", function () {",
+											"    pm.expect(jsonData.project_id).to.eql(proj_id);",
+											"});",
+											"",
+											"pm.test(\"Task not completed: Verified\", function () {",
+											"    pm.expect(jsonData.completed).to.eql(false);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Content-Type is application/json\", () => {",
+											"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+											"});",
+											"",
+											"pm.test(\"Validate schema\", () => {",
+											"    pm.response.to.have.jsonSchema(schema);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{taskURL}}/{{taskId}}",
+									"host": [
+										"{{taskURL}}"
+									],
+									"path": [
+										"{{taskId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Update a task",
+					"item": [
+						{
+							"name": "Update a task",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code: 204 No Content\", function () {",
+											"    pm.response.to.have.status(204);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "X-Requested-With",
+										"value": "$(uuidgen)",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"content\": \"{{Chore2}}\"\n}"
+								},
+								"url": {
+									"raw": "{{taskURL}}/{{taskId}}",
+									"host": [
+										"{{taskURL}}"
+									],
+									"path": [
+										"{{taskId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Change a task status to complete",
+					"item": [
+						{
+							"name": "Change Task to completed",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 2xx\", function () {",
+											"    pm.response.to.be.success;",
+											"});",
+											"",
+											"pm.test(\"Status code: 204 No Content\", function () {",
+											"    pm.response.to.have.status(204);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Requested-Id",
+										"value": "$(uuidgen)",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{taskURL}}/{{taskId}}/close",
+									"host": [
+										"{{taskURL}}"
+									],
+									"path": [
+										"{{taskId}}",
+										"close"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Reopen a task",
+					"item": [
+						{
+							"name": "Reopen a task",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code: 204 No Content\", function () {",
+											"    pm.response.to.have.status(204);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{taskURL}}/{{taskId}}/reopen",
+									"host": [
+										"{{taskURL}}"
+									],
+									"path": [
+										"{{taskId}}",
+										"reopen"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Delete a task",
+					"item": [
+						{
+							"name": "Delete a task",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 2xx\", function () {",
+											"    pm.response.to.be.success;",
+											"});",
+											"",
+											"pm.test(\"Status code: 204 No Content\", function () {",
+											"    pm.response.to.have.status(204);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{taskURL}}/{{taskId}}",
+									"host": [
+										"{{taskURL}}"
+									],
+									"path": [
+										"{{taskId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Negative scenarios",
+					"item": [
+						{
+							"name": "Create a new task - Invalid Project id",
+							"item": [
+								{
+									"name": "Create a new task - invalid Project Id",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 400 Bad request\", function () {",
+													"    pm.response.to.have.status(400);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											},
+											{
+												"key": "X-Requested-Id",
+												"value": "$(uuidgen)",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"content\": \"{{Chore1}}\", \"project_id\": \"{{invalidProjectId}}\"\n}"
+										},
+										"url": {
+											"raw": "{{taskURL}}",
+											"host": [
+												"{{taskURL}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Get an active task - Invalid Task Id",
+							"item": [
+								{
+									"name": "Get an active task - invalid Task Id",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 404 Not Found\", function () {",
+													"    pm.response.to.have.status(404);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{taskURL}}/{{invalidTask}}",
+											"host": [
+												"{{taskURL}}"
+											],
+											"path": [
+												"{{invalidTask}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Update a task - Invalid Task Id",
+							"item": [
+								{
+									"name": "Update a task - Invalid Task Id",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 400 Bad request\", function () {",
+													"    pm.response.to.have.status(400);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											},
+											{
+												"key": "X-Requested-With",
+												"value": "$(uuidgen)",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"content\": \"{{Chore2}}\"\n}"
+										},
+										"url": {
+											"raw": "{{taskURL}}/{{invalidTask}}",
+											"host": [
+												"{{taskURL}}"
+											],
+											"path": [
+												"{{invalidTask}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Change task to completed - Invalid Task Id",
+							"item": [
+								{
+									"name": "Change Task to completed Copy",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code: 204 No Content\", function () {",
+													"    pm.response.to.have.status(204);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "X-Requested-Id",
+												"value": "$(uuidgen)",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{taskURL}}/{{invalidTask}}/close",
+											"host": [
+												"{{taskURL}}"
+											],
+											"path": [
+												"{{invalidTask}}",
+												"close"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Reopen a task - Invalid Task Id",
+							"item": [
+								{
+									"name": "Reopen a task - Invalid Task Id",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 400 Bad request\", function () {",
+													"    pm.response.to.have.status(400);",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "{{taskURL}}/{{invalidTask}}/reopen",
+											"host": [
+												"{{taskURL}}"
+											],
+											"path": [
+												"{{invalidTask}}",
+												"reopen"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Delete a task - Invalid Task Id",
+							"item": [
+								{
+									"name": "Delete a task - invalid Task Id",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 400 Bad request\", function () {",
+													"    pm.response.to.have.status(400);",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{taskURL}}/{{invalidTask}}",
+											"host": [
+												"{{taskURL}}"
+											],
+											"path": [
+												"{{invalidTask}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.test(\"Response time is less than 1500 ms\", function () {",
+					"    pm.expect(pm.response.responseTime).to.be.below(1500);",
+					"});",
+					"",
+					""
+				]
+			}
+		}
+	]
+}
